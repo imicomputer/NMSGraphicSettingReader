@@ -1,2 +1,5 @@
 # NMSGraphicSettingReader
-No Man Sky's Graphical Setting Reader
+No Man Sky Video Game's Graphical Setting Reader
+
+Requirement:
+JQuery
