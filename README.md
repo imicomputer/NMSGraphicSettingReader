@@ -2,7 +2,7 @@
 No Man Sky Video Game's Graphical Setting Reader
 
 Requirement:
-JQuery
+- JQuery
 
 How to use:
 - Double-click the NMSGraphicSettingsReader.htm file from the extraction folder
