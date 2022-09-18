@@ -1,0 +1,115 @@
+<head>
+	<title>No Man's Sky - Graphic Setting Reader</title>
+	<meta name="description" content="Hello Game No Man's Sky games Graphic Setting Reader">
+	
+	<style type="text/css">
+		.dropZone {
+			text-align: center;
+			border: 1px dashed;
+			padding: 25 0;
+			background-color: lightgray;
+		}
+
+		table	{
+			width: 80%;
+			border: 1px solid black;
+			border-spacing: 1px;
+		}
+
+		th {
+			text-align: left;
+			background-color: lightgray;
+		}
+
+		td {
+			border: 1px solid lightgray;			
+		}
+	</style>
+</head>
+<body>
+	<h1>No Man's Sky Graphic</h1>
+	<fieldset>
+		<legend>Advanced Graphic Setting Reader</legend>
+		<div id="drop_zone" class="dropZone">Drop the <b><u>TKGRAPHICSSETTINGS.MXML</u></b> files here</div>
+
+		<output id="list"></output>
+	</fieldset>
+	
+	<br />
+	<output id="xmlContent"></output>
+
+	<script type="text/javascript" src="readerFW.js"></script>
+	<script type="text/javascript">
+		function handleFileSelect(evt) {
+			evt.stopPropagation();
+			evt.preventDefault();
+			
+			var files = evt.dataTransfer.files, file = files[0]; // FileList object.
+			var xmlDoc, strOut="", isNested=false, nestedKey;
+
+			var reader = new FileReader();
+
+			reader.onload = (function(theFile) {
+				return function(e) {
+					// Render File Info.
+					if (theFile.name === "TKGRAPHICSSETTINGS.MXML") {
+						$('#list').html(
+							'<ul>' +
+								'<li><strong>' + escape(theFile.name) + '</strong> (' + (theFile.type || 'n/a') + ') - '
+									+ theFile.size + ' bytes, last modified: '
+									+ (theFile.lastModifiedDate ? files[0].lastModifiedDate.toLocaleDateString("id-ID", {day: 'numeric', month: 'short', year: 'numeric'}) : 'n/a')
+								+ '</li>'
+							+ '</ul>'
+						);
+
+						xmlDoc = $.parseXML(e.target.result);  
+						//Splitting of Rows in the xml file  
+						xmlrows = $(xmlDoc).find("Property");  
+						for (var i = 0; i < xmlrows.length; i++) {  
+							if (xmlrows[i] != "") {
+								if (xmlrows[i].attributes.length == 1) {
+									if (xmlrows[i].attributes["name"].value) {
+										strOut += "<tr><th colspan=2 align='center'>" + xmlrows[i].attributes["name"].value.toString() + "</th></tr>";
+										isNested = true;
+										nestedKey = xmlrows[i].attributes["name"].value.toString();										
+									}
+								}
+								else if (xmlrows[i].attributes.length == 2) {
+									strOut += "<tr>";
+									strOut += "<th>" + (isNested ? "&nbsp;" : xmlrows[i].attributes["name"].value.toString()) + "</th>";
+									strOut += "<td>" + (isNested ? "["+xmlrows[i].attributes["name"].value.toString()+"] " : "") + xmlrows[i].attributes.value.value.toString() + "</td>";
+									strOut += "</tr>";
+									
+									if (xmlrows[i].attributes["name"].value.toString().toLowerCase().search(nestedKey) <= 0) {
+										isNested = false;
+									}
+								}
+							}
+						}
+						$("#xmlContent").html("CONTENTS: <br /><center><table><tbody>" + strOut + "</tbody></table></center>");
+					}
+					else {
+						$('#list').html("");
+						$('#xmlContent').html("");
+
+						alert("Invalid file provided!");
+					}
+				};
+			})(file);
+
+			reader.readAsText(file);
+		}
+		
+		function handleDragOver(evt) {
+			evt.stopPropagation();
+			evt.preventDefault();
+			evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+		}
+		
+		// Setup the dnd listeners.
+		var dropZone = document.querySelector('#drop_zone');
+		dropZone.addEventListener('dragover', handleDragOver, false);
+		dropZone.addEventListener('drop', handleFileSelect, false);
+
+	</script>
+</body>
