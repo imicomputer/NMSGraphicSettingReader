@@ -10,4 +10,4 @@ No Man Sky Video Game's Graphical Setting Reader
 - Drag and Drop the *TKGRAPHICSSETTINGS.MXML* file located on "<your_steam_folder>\steamapps\common\No Man's Sky\Binaries\SETTINGS" to the box provided
 - See your game Graphical Setting in the simple and relaxing view of a table.
 
-![Screenshot](https://github.com/imicomputer/NMSGraphicSettingReader/blob/master/NMSGraphicsSettingReader.PNG)
+![Screenshot]([https://github.com/imicomputer/NMSGraphicSettingReader/blob/master/NMSGraphicsSettingReader.PNG](https://github.com/imicomputer/NMSGraphicSettingReader/blob/master/NMSGraphicsSettingReader.PNG?raw=true))
